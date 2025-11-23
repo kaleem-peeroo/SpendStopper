@@ -39,6 +39,14 @@ def encrypt_file(input_file: str = "", output_file: str = "", password: str = ""
 
 
 def decrypt_file(encrypted_file, output_file, password):
+    if encrypted_file == "" or encrypted_file is None:
+        raise ValueError("Empty input file")
+
+    if output_file == "" or output_file is None:
+        raise ValueError("Empty output file")
+
+    if password == "" or password is None:
+        raise ValueError("Empty password")
     with open(encrypted_file, "rb") as f:
         salt = f.read(16)
         encrypted_data = f.read()
