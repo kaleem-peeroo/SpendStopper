@@ -5,14 +5,20 @@ from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 
 
-def get_key_from_password(password: str, salt: bytes) -> bytes:
+def get_key_from_password(s_password: str = "", salt: bytes = 0b00000000) -> bytes:
+    if s_password == "" or s_password is None:
+        raise ValueError("Password is empty")
+
+    if salt == 0b00000000 or salt is None:
+        raise ValueError("Salt is empty")
+
     kdf = PBKDF2HMAC(
         algorithm=hashes.SHA256(),
         length=32,
         salt=salt,
         iterations=600_000,
     )
-    key = base64.urlsafe_b64encode(kdf.derive(password.encode()))
+    key = base64.urlsafe_b64encode(kdf.derive(s_password.encode()))
     return key
 
 
